@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>upload_img</title>
+	<style type="text/css">
+	/*上传照片*/
+	.template1{ display:none; }
+	/*外层span*/
+	.img_upload{width: 65px;height: 65px;display: inline-block; position: relative;}
+	/*添加图标*/
+	.image_click{cursor: pointer;width: 65px;height: 65px; }
+	/*删除图标*/
+	.image_close{
+		display: none;
+	    position: absolute;
+	    left: 55px;
+	    top: -4px;
+	    width: 15px;
+	    height: 15px;
+	    text-align: center;
+	    line-height: 15px;
+	    border-radius: 15px;
+	    background-color: #FF5053;
+	    color: #f3f3f3;
+	    border: solid 1px #FF5053;
+	    font-size: 9px;
+	    font-weight: 200;
+	    z-index: 1;
+	    cursor: pointer;
+	}
+	</style>
+</head>
+<body>
+	<div class="img">
+		 <span class="img_upload">
+	    	<img src="iconfont-tianjia.png" alt="" class="image_click">
+	    	<span class="image_close">X</span>
+			<input type="file" name="imgs[]" accept="image/*" style="display:none;"/> 
+		</span>
+	</div>
+	<div class="template1">
+		<span  class="img_upload">
+	    	<img src="iconfont-tianjia.png" alt="" class="image_click">
+	    	<span class="image_close">X</span>
+			<input type="file" name="imgs[]" accept="image/*" style="display:none;"/> 
+		</span>
+	</div>
+	<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+	<script type="text/javascript">
+		var index;
+		var img_src =new Array() ;
+		var t=0;
+		//首次添加图片 
+		$(".img_upload img").click(function(){
+			$(this).siblings("input[type='file']").click();
+		})
+
+		$(".img_upload input[type='file']").change(function(){
+			preview1($(this));
+		})
+
+		// 添加图片并预览，添加时自身调用
+		function preview1($obj){
+	        var obj = document.getElementsByName('imgs[]');//获取input[type='file']
+	        console.log(obj);
+	        if(!index&&index!= 0){;
+	        	index = 0;
+	        }else index++;
+	        console.log(index);
+	        var img = obj[index].files[0];//获取上传的文件
+	        var src = window.URL.createObjectURL(img);//获取上传图片的地址
+	        img_src[t++] = src;
+	        $obj.siblings('img').attr('src',src);//添加图片变上传图片
+	        $obj.attr('disabled','true');//禁止点击上传图片
+	        $obj.siblings('span').show();//删除图标出现
+	        delete_img();
+	        // 添加模板
+	        $(".img").append($(".template1").html()); 
+	        //设置未来事件
+	        $(".img img").on("click",function(){
+				$(this).siblings("input[type='file']").click();
+			})
+			$(".img input[type='file']").on("change",function(){
+					preview1($(this));
+				})
+	    }
+
+	    // 删除照片
+	    function delete_img(){
+	    	var delete_button = $(".image_close");
+	    	for(var i=0;i<delete_button.length;i++){
+					delete_button[i].onclick=(function(i){
+						return function()
+				        {
+				            img_src[i]="delete";
+			    			$(this).parent().hide();
+				        }
+				})(i)
+			};
+	    }
+	</script>
+</body>
+</html>
