@@ -89,15 +89,22 @@
 	    // 删除照片
 	    function delete_img(){
 	    	var delete_button = $(".image_close");
-	    	for(var i=0;i<delete_button.length;i++){
-					delete_button[i].onclick=(function(i){
-						return function()
-				        {
-				            img_src[i]="delete";//删除图片地址
-			    			$(this).parent().hide();
-				        }
-				})(i)
-			};
+	    	//js遍历获取对应的i值
+	  //   	for(var i=0;i<delete_button.length;i++){
+			// 		delete_button[i].onclick=(function(i){
+			// 			return function()
+			// 	        {
+			// 	            img_src[i]="delete";//删除图片地址
+			//     			$(this).parent().hide();
+			// 	        }
+			// 	})(i)
+			// };
+			// jq获取对应的i值
+			delete_button.on('click',function(){
+				var g = $.inArray(this,delete_button);
+				img_src[g]="delete";
+				$(this).parent().hide();
+			})
 	    }
 	</script>
 </body>
