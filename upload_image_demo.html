@@ -49,7 +49,7 @@
 	<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
 	<script type="text/javascript">
 		var index;
-		var img_src =new Array() ;
+		var img_src =new Array() ;//存储图片地址
 		var t=0;
 		//首次添加图片 
 		$(".img_upload img").click(function(){
@@ -93,7 +93,7 @@
 					delete_button[i].onclick=(function(i){
 						return function()
 				        {
-				            img_src[i]="delete";
+				            img_src[i]="delete";//删除图片地址
 			    			$(this).parent().hide();
 				        }
 				})(i)
