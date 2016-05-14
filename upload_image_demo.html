@@ -50,6 +50,7 @@
 	<script type="text/javascript">
 		var index;
 		var img_src =new Array() ;//存储图片地址
+		var image = new Array(); //传输时存储图片地址
 		var t=0;
 		//首次添加图片 
 		$(".img_upload img").click(function(){
@@ -63,17 +64,18 @@
 		// 添加图片并预览，添加时自身调用
 		function preview1($obj){
 	        var obj = document.getElementsByName('imgs[]');//获取input[type='file']
-	        console.log(obj);
+	        // console.log(obj);
 	        if(!index&&index!= 0){;
 	        	index = 0;
 	        }else index++;
-	        console.log(index);
+	        // console.log(index);
 	        var img = obj[index].files[0];//获取上传的文件
 	        var src = window.URL.createObjectURL(img);//获取上传图片的地址
 	        img_src[t++] = src;
 	        $obj.siblings('img').attr('src',src);//添加图片变上传图片
 	        $obj.attr('disabled','true');//禁止点击上传图片
 	        $obj.siblings('span').show();//删除图标出现
+	        // console.log(img_src);
 	        delete_img();
 	        // 添加模板
 	        $(".img").append($(".template1").html()); 
@@ -89,23 +91,37 @@
 	    // 删除照片
 	    function delete_img(){
 	    	var delete_button = $(".image_close");
-	    	//js遍历获取对应的i值
-	  //   	for(var i=0;i<delete_button.length;i++){
-			// 		delete_button[i].onclick=(function(i){
-			// 			return function()
-			// 	        {
-			// 	            img_src[i]="delete";//删除图片地址
-			//     			$(this).parent().hide();
-			// 	        }
-			// 	})(i)
-			// };
+	  //   	//js遍历获取对应的i值
+	    	for(var i=0;i<delete_button.length;i++){
+					delete_button[i].onclick=(function(i){
+						return function()
+				        {
+				            img_src[i]="delete";//删除图片地址
+			    			$(this).parent().hide();
+				        }
+				})(i)
+			};
 			// jq获取对应的i值
-			delete_button.on('click',function(){
-				var g = $.inArray(this,delete_button);
-				img_src[g]="delete";
-				$(this).parent().hide();
-			})
+			// delete_button.on('click',function(){
+			// 	var g = $.inArray(this,delete_button);
+			// 	img_src[g]="delete";
+			// 	console.log(img_src);
+			// 	$(this).parent().hide();
+			// })
 	    }
+		
+	     //当向要像后台传输图片地址时此函数才运行
+	    function transfer(){
+		    var j=0;
+			//处理已删除的图片地址
+			for(var i=0;i<t;i++){
+				if(img_src[i]!="delete"){
+					image[j++]=img_src[i];
+				}
+			}
+			console.log(image);
+	    }
+	    
 	</script>
 </body>
 </html>
